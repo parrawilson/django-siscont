@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load form_filters %}
+
+{% block content %}
+<div class="flex justify-center py-10">
+  <div class="w-full max-w-2xl bg-white p-6 rounded-2xl shadow-xl min-h-[700px]">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8">Editar Empresa</h2>
+
+    <div id="form-container">
+      {% include 'empresas/partials/empresa_form.html' %}
+    </div>
+  </div>
+</div>
+
+<script>
+{{ block.super }}  // reutiliza el script de consultarRUC
+</script>
+{% endblock %}

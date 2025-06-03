@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load form_filters %}
+
+{% block content %}
+<div class="flex justify-center py-10">
+  <div class="w-full max-w-2xl bg-white p-6 rounded-2xl shadow-xl min-h-[700px]">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8">Registrar Empresa</h2>
+
+    <div id="form-container">
+      {% include 'empresas/partials/empresa_form.html' %}
+    </div>
+  </div>
+</div>
+
+<script>
+function consultarRUC() {
+  const rucInput = document.querySelector('input[name="ruc"]');
+  const dvInput = document.querySelector('input[name="dv"]');
+  const nombreInput = document.querySelector('input[name="nombre"]');
+  const estadoSelect = document.querySelector('select[name="estado"]');
+
+  const ruc = rucInput.value.trim();
+  if (!ruc) {
+    alert("Por favor, introduzca un RUC.");
+    return;
+  }
+
+  fetch(`https://turuc.com.py/api/contribuyente?ruc=${ruc}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data && data.data) {
+        nombreInput.value = data.data.razonSocial || '';
+        dvInput.value = data.data.dv || '';
+        const estado = data.data.estado?.toUpperCase() || '';
+        const opciones = Array.from(estadoSelect.options).map(opt => opt.value.toUpperCase());
+        if (opciones.includes(estado)) {
+          estadoSelect.value = estado;
+        }
+      } else {
+        alert("No se encontró información para ese RUC.");
+      }
+    })
+    .catch(error => {
+      console.error("Error al consultar RUC:", error);
+      alert("Error al consultar el RUC. Intente más tarde.");
+    });
+}
+</script>
+{% endblock %}
+
+
+
+
+
+
